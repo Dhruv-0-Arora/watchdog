@@ -1,0 +1,37 @@
+# watchdog settings. Copy to ~/.config/watchdog/watchdog.conf and edit.
+# Every value below is the built-in default, so an empty file behaves identically.
+# Anything invalid is reported with a line number and the daemon refuses to start.
+
+# Interface to capture on. Unset means "pick the active one with a routable address".
+# interface = en0
+
+# Packets of normal traffic to learn from before any alert can fire.
+# The first tenth of these is spent learning which features correlate.
+grace_packets = 1000000
+
+# Alert when a score exceeds this multiple of the adaptive 1-in-100,000 quantile.
+# Raise it if a noisy network produces alerts you do not care about.
+alert_factor = 1.5
+
+# Fixed slot counts for the per-entity statistics tables. Powers of two.
+# These set the memory ceiling: the tables never grow, stale entries are evicted.
+mac_ip_slots = 4096
+host_slots = 4096
+channel_slots = 32768
+socket_slots = 32768
+
+# Repeated alerts from one source fold into a single incident. An incident closes
+# after this much quiet, and is cut into a new one after the maximum duration so
+# that a long attack still produces log records while it is happening.
+incident_cooldown_seconds = 5
+incident_max_duration_seconds = 60
+
+# Where incidents are appended, and the size at which the log rotates (two files kept).
+# alerts = ~/.local/state/watchdog/alerts.jsonl
+alert_log_max_bytes = 8388608
+
+# Model checkpoint. Set this so a restart resumes instead of relearning from scratch.
+# model = ~/.local/state/watchdog/model.ckpt
+
+# Unix socket that 'watchdog top' connects to.
+# socket = /tmp/watchdog-501.sock

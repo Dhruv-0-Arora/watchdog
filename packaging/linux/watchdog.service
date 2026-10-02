@@ -1,0 +1,41 @@
+[Unit]
+Description=Network anomaly watchdog
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/watchdog run
+Restart=on-failure
+RestartSec=30
+User=watchdog
+Group=watchdog
+UMask=0007
+
+AmbientCapabilities=CAP_NET_RAW
+CapabilityBoundingSet=CAP_NET_RAW
+NoNewPrivileges=yes
+
+StateDirectory=watchdog
+Environment=XDG_STATE_HOME=/var/lib
+RuntimeDirectory=watchdog
+Environment=XDG_RUNTIME_DIR=/run/watchdog
+
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=no
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_UNIX AF_PACKET
+RestrictNamespaces=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+SystemCallArchitectures=native
+
+Nice=10
+IOSchedulingClass=idle
+
+[Install]
+WantedBy=multi-user.target
